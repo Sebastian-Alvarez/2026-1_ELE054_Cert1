@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface LibroService {
     boolean crearLibro(Libro nuevoLibro);
     List<Libro> getAll();
-    Optional<Libro> findByAutor(String autor);
+    List<Libro> librosByAutor(String autor);
 }

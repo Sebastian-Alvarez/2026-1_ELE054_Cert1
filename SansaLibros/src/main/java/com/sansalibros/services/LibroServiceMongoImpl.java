@@ -3,10 +3,12 @@ package com.sansalibros.services;
 import com.sansalibros.entities.Libro;
 import com.sansalibros.repositories.LibrosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class LibroServiceMongoImpl implements LibroService{
 
     @Autowired
@@ -14,16 +16,24 @@ public class LibroServiceMongoImpl implements LibroService{
 
     @Override
     public boolean crearLibro(Libro nuevoLibro) {
-        return false;
+        try{
+            this.librosRepository.insert(nuevoLibro);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public List<Libro> getAll() {
-        return List.of();
+        return this.librosRepository.findAll();
     }
 
     @Override
-    public Optional<Libro> findByAutor(String autor) {
-        return Optional.empty();
+    public List<Libro> librosByAutor(String autor) {
+        return this.librosRepository.findAll()
+                .stream()
+                .filter(libro -> libro.getAutor().equals(autor))
+                .toList();
     }
 }
