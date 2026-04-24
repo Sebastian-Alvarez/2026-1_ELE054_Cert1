@@ -36,4 +36,16 @@ public class LibroServiceMongoImpl implements LibroService{
                 .filter(libro -> libro.getAutor().equals(autor))
                 .toList();
     }
+
+    @Override
+    public List<Libro> search(String query) {
+        String q = query.toLowerCase();
+        return this.librosRepository.findAll()
+                .stream()
+                .filter(libro ->
+                        libro.getTitulo().toLowerCase().contains(q) ||
+                                libro.getAutor().toLowerCase().contains(q)
+                )
+                .toList();
+    }
 }
