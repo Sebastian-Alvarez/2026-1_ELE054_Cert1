@@ -9,4 +9,5 @@ public interface LibroService {
     boolean crearLibro(Libro nuevoLibro);
     List<Libro> getAll();
     List<Libro> librosByAutor(String autor);
+    List<Libro> search(String query);
 }

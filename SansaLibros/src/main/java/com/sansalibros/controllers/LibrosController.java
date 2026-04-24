@@ -15,15 +15,20 @@ public class LibrosController {
     private LibroService libroService;
 
     @GetMapping("/libros")
-    public ResponseEntity<List<Libro>> getAll(){
+    public ResponseEntity<List<Libro>> getAll(@RequestParam(required = false) String search){
         try {
-            List<Libro> listaLibros = this.libroService.getAll();
-            return  ResponseEntity.ok(listaLibros);
+            List<Libro> listaLibros;
+            if (search != null && !search.isBlank()) {
+                listaLibros = this.libroService.search(search);
+            } else {
+                listaLibros = this.libroService.getAll();
+            }
+            return ResponseEntity.ok(listaLibros);
         } catch (Exception e) {
-            //Si hay algun fallo en la peticion se captura y se devuelve un internar server error (500)
             return ResponseEntity.internalServerError().build();
         }
     }
+
     @PostMapping("/crearLibro")
     public ResponseEntity<?> crearLibro (@Valid @RequestBody Libro nuevoLibro){
         boolean res = this.libroService.crearLibro(nuevoLibro);
